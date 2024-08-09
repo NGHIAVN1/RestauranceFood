@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:main/screens/banner.dart';
-import 'package:main/screens/circlectalog.dart';
+import 'package:main/components/banner.dart';
+import 'package:main/components/circlectalog.dart';
 import 'package:main/screens/login.dart';
-import 'package:main/screens/popularfood.dart';
+import 'package:main/components/popularfood.dart';
 import 'package:theme_provider/theme_provider.dart';
 
 class HomePage extends StatefulWidget {

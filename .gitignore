@@ -44,4 +44,4 @@ app.*.map.json
 lib/
 lib/homepage.dart
 lib/login
-lib/service
+lib/components

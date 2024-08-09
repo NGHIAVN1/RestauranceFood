@@ -2,7 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:main/screens/country_picker.dart';
+import 'package:main/components/country_picker.dart';
 import 'package:main/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import '';
