@@ -2,10 +2,16 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:main/blocs/authentication_bloc.dart';
+import 'package:main/blocs/login_blog.dart';
+import 'package:main/blocs/login_blog.dart';
 import 'package:main/components/country_picker.dart';
 import 'package:main/screens/homepage.dart';
 import 'package:flutter/material.dart';
-import '';
+import 'package:main/services/auth-service.dart';
+
+import '../blocs/login_blog.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -14,16 +20,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late LoginBloc _loginBloc;
+  @override
+  void initState() {
+    super.initState();
+     _loginBloc = LoginBloc(AuthenticationService());
+  }
+
   String _selectedPhoneCode = '';
   String _iconNation = '';
-  
+
   void displayFlagEmoji() {
     _iconNation.isNotEmpty ? 'sssss' : 'Countries';
   }
 
   @override
   Widget build(BuildContext context) {
-     
     return Scaffold(
       appBar: AppBar(
         title: Text('Login Page'),
@@ -78,8 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 5.0),
                                 child: Text(
-                               ' ${_iconNation.isNotEmpty ? 'Country $_iconNation' : 'Countries'}'
-                          ,
+                                  ' ${_iconNation.isNotEmpty ? 'Country $_iconNation' : 'Countries'}',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -95,36 +106,42 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        height: 50,
-                        width: 250,
-                        child: StreamBuilder(stream: null,
-                         builder: (BuildContext context, AsyncSnapshot snapshot )=>
-                        TextField(
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) => print(value),
-                          decoration: InputDecoration(
-                              // prefixIcon: Icon(_iconNation),
-                            
-                              prefixText: _selectedPhoneCode.isNotEmpty
-                                  ? '+($_selectedPhoneCode)'
-                                  : '',
-                              hintText: '000 000 000',
-                              prefixStyle: TextStyle(),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0))),
-                        ),) 
-                        
-                      ),
+                          height: 50,
+                          width: 250,
+                          child: StreamBuilder(
+                            stream: _loginBloc.phoneNumber,
+                            builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) =>
+                                TextField(
+                              keyboardType: TextInputType.number,
+                              onChanged: (phonenumber)=>_loginBloc.phoneNumberChange.add(phonenumber),
+                              decoration: InputDecoration(
+                                  // prefixIcon: Icon(_iconNation),
+
+                                  prefixText: _selectedPhoneCode.isNotEmpty
+                                      ? '+($_selectedPhoneCode)'
+                                      : '',
+                                  hintText: '000 000 000',
+                                  prefixStyle: TextStyle(),
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0))),
+                            ),
+                          )),
                     ),
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.amber),
-                      child: IconButton(
-                          onPressed: () => {},
-                          icon: Icon(Icons.east)),
+                    StreamBuilder(
+                      stream: null,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) =>
+                          Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: Colors.amber),
+                        child: IconButton(
+                            onPressed: () => {},
+                            icon: Icon(Icons.east)),
+                      ),
                     )
                   ],
                 ),
