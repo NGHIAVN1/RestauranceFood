@@ -1,4 +1,5 @@
 import 'package:country_picker/country_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -9,8 +10,7 @@ import 'package:main/components/country_picker.dart';
 import 'package:main/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:main/services/auth-service.dart';
-
-import '../blocs/login_blog.dart';
+import 'package:main/firebase_options.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,7 +24,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-     _loginBloc = LoginBloc(AuthenticationService());
+    _loginBloc = LoginBloc(AuthenticationService());
+  }
+
+  @override
+  void dispose() {
+    super.initState();
   }
 
   String _selectedPhoneCode = '';
@@ -56,7 +61,6 @@ class _LoginPageState extends State<LoginPage> {
               ))
             ],
           ),
-
           Card(
             color: Colors.white,
             child: Container(
@@ -109,12 +113,14 @@ class _LoginPageState extends State<LoginPage> {
                           height: 50,
                           width: 250,
                           child: StreamBuilder(
+                            initialData: '',
                             stream: _loginBloc.phoneNumber,
                             builder: (BuildContext context,
                                     AsyncSnapshot snapshot) =>
                                 TextField(
                               keyboardType: TextInputType.number,
-                              onChanged: (phonenumber)=>_loginBloc.phoneNumberChange.add(phonenumber),
+                              onChanged: (phonenumber) =>
+                                  _loginBloc.phoneNumberChange.add(phonenumber),
                               decoration: InputDecoration(
                                   // prefixIcon: Icon(_iconNation),
 
@@ -129,20 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           )),
                     ),
-                    StreamBuilder(
-                      stream: null,
-                      builder: (BuildContext context, AsyncSnapshot snapshot) =>
-                          Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            color: Colors.amber),
-                        child: IconButton(
-                            onPressed: () => {},
-                            icon: Icon(Icons.east)),
-                      ),
-                    )
+                    _builtFormPhoneNumber()
                   ],
                 ),
               ),
@@ -170,14 +163,12 @@ class _LoginPageState extends State<LoginPage> {
               )),
             ]),
           ),
-
           Center(
             child: Text(
               'Login with your social media account',
               selectionColor: Colors.blue,
             ),
           ),
-
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Row(
               children: [
@@ -211,57 +202,34 @@ class _LoginPageState extends State<LoginPage> {
               selectionColor: Colors.blue,
             ),
           ),
-
-          //  Row(
-          //   crossAxisAlignment: CrossAxisAlignment.center,
-          //   children: [
-          //       Row(
-          //       children: [
-          //          Container(
-          //             width: 50,
-          //             child: Image.asset('assets/images/google.jpeg',
-          //             ),
-          //           ),
-          //            Container(
-          //             width: 50,
-          //             child: Image.asset('assets/images/facebook.png',
-          //             ),
-          //           ),
-          //            Container(
-          //             width: 50,
-          //             child: Image.asset('assets/images/phone.png',
-          //             ),
-          //           )
-          //       ],
-          //     )
-          //   ],)
-          //  Center(
-          //         child: Container(
-          //           child:  ListView(
-          //         scrollDirection: Axis.horizontal,
-          //         children: [
-          //           Container(
-          //             width: 50,
-          //             child: Image.asset('assets/images/google.jpeg',
-          //             ),
-          //           ),
-          //            Container(
-          //             width: 50,
-          //             child: Image.asset('assets/images/facebook.png',
-          //             ),
-          //           ),
-          //            Container(
-          //             width: 50,
-          //             child: Image.asset('assets/images/phone.png',
-          //             ),
-          //           )
-          //         ]
-          //       ),
-          //         )
-          //        ,)
         ],
       ),
     );
+  }
+
+  StreamBuilder<String> _builtFormPhoneNumber() {
+    return StreamBuilder(
+                    initialData: '',
+                    stream: _loginBloc.phoneNumber,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) =>
+                        Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: Colors.amber),
+                      child: IconButton(
+                          onPressed: () async {
+                            try {
+                              await _loginBloc.logIn('+84 946 776 036');
+                              Navigator.pushNamed(context, '/verify_otp');
+                            } on FirebaseException catch (e) {
+                              print('Exception: ${e.toString()}');
+                            }
+                          },
+                          icon: Icon(Icons.east)),
+                    ),
+                  );
   }
 
   void PhoneNumberOptions({required BuildContext context}) {

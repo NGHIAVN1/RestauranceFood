@@ -16,6 +16,16 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.google.gms:google-services:4.3.15' // Add this line
+    }
+}
 google-services{
     plugins {
     id "com.android.application"
@@ -38,6 +48,8 @@ dependencies {
   // Add the dependencies for any other desired Firebase products
 
   // https://firebase.google.com/docs/android/setup#available-libraries
+
+    classpath 'com.google.gms:google-services:4.3.15' // Add this line
 
 }
 

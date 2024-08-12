@@ -1,6 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:main/screens/authen_otp.dart';
 import 'package:main/screens/homepage.dart';
 import 'package:main/screens/login.dart';
 import 'package:theme_provider/theme_provider.dart';
@@ -81,7 +82,8 @@ class SwitchThemes extends StatelessWidget {
                     initialRoute: '/',
                     routes: {
                       '/': (context) => HomePage(),
-                      '/login': (context)=>LoginPage()
+                      '/login': (context)=>LoginPage(),
+                      '/verify_otp': (context)=>OtpVerification(),
                     },
                      theme: ThemeProvider.themeOf(themeContext).data,
                     

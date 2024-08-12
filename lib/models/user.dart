@@ -1,9 +1,10 @@
 class User {
-  String phoneNumber;
-  String fullName;
-  String address;
-  User(
-      {required this.phoneNumber,
-      required this.fullName,
-      required this.address});
+  String? documentId;
+  String? phoneNumber;
+  String? fullName;
+  String? password;
+  String? address;
+  String? uid;
+  User({this.phoneNumber, this.fullName, this.address, this.uid, this.documentId, this.password});
+  
 }

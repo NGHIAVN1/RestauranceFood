@@ -5,36 +5,36 @@ import 'package:main/services/authentication.dart';
 
 class LoginBloc with Validators {
   final Authentication _authentication;
-  // String _phoneNumber;
-  // bool _validatePhoneNumber;
-
-  LoginBloc(
-    this._authentication,
-  ) {
-    // _startListenerPhoneNumberValid();
-  }
-
+  late String _phoneNumber;
+  late bool _validatePhoneNumber;
   final StreamController<String> _phoneNumberController =
       StreamController<String>.broadcast();
+
+  LoginBloc(this._authentication) {
+    _startListenerPhoneNumberValid();
+  }
   Sink<String> get phoneNumberChange => _phoneNumberController.sink;
   Stream<String> get phoneNumber =>
       _phoneNumberController.stream.transform(validators);
 
-  // void _startListenerPhoneNumberValid() {
-  //   phoneNumber.listen((phoneNumber) {
-  //     _phoneNumber = phoneNumber;
-  //     _validatePhoneNumber = true;
-  //   }).onError((err) {
-  //     _phoneNumber = '';
-  //     _validatePhoneNumber = false;
-  //   });
-  // }
-
-  Future<String> logIn(String _numberPhone) async {
-    String _result = '';
-    await _authentication.phoneNumberVerification(_numberPhone).then((user) {
-      _result = 'Success';
+  final StreamController<String> _otpCodeController =
+      StreamController.broadcast();
+  Sink<String> get changeOtpCode => _otpCodeController.sink;
+  Stream<String> get OtpCode => _otpCodeController.stream;
+  void _startListenerPhoneNumberValid() {
+    phoneNumber.listen((phoneNumber) {
+      _phoneNumber = phoneNumber;
+      _validatePhoneNumber = true;
+    }).onError((err) {
+      _phoneNumber = '';
+      _validatePhoneNumber = false;
     });
-    return _result;
+  }
+
+  Future<void> logIn(String phone) async {
+    await _authentication.phoneNumberVerification(phone);
+  }
+  Future<void> verifyOtp(String smsCode) async {
+    await _authentication.verifyOTP(smsCode);
   }
 }
