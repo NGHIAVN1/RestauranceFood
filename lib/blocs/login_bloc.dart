@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:main/classes/validator.dart';
 import 'package:main/services/authentication.dart';
 
@@ -32,9 +33,9 @@ class LoginBloc with Validators {
   }
 
   Future<void> logIn(String phone) async {
-    await _authentication.phoneNumberVerification(phone);
+    await _authentication.signInWithPhoneNumber(phone);
   }
   Future<void> verifyOtp(String smsCode) async {
-    await _authentication.verifyOTP(smsCode);
+    await _authentication.verifyOTP( verificationId: "" ,smsCode: smsCode);
   }
 }

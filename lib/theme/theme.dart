@@ -83,7 +83,6 @@ class SwitchThemes extends StatelessWidget {
                     routes: {
                       '/': (context) => HomePage(),
                       '/login': (context)=>LoginPage(),
-                      '/verify_otp': (context)=>OtpVerification(),
                     },
                      theme: ThemeProvider.themeOf(themeContext).data,
                     

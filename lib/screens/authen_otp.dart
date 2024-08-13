@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:main/blocs/authentication_bloc.dart';
-import 'package:main/blocs/login_blog.dart';
-import 'package:main/blocs/login_blog.dart';
+import 'package:main/blocs/login_bloc.dart';
+import 'package:main/blocs/login_bloc.dart';
 import 'package:main/components/country_picker.dart';
 import 'package:main/screens/homepage.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ import 'package:main/services/auth-service.dart';
 import 'package:main/firebase_options.dart';
 
 class OtpVerification extends StatefulWidget {
-  const OtpVerification({super.key});
+  const OtpVerification({super.key, required String verificationId});
 
   @override
   State<OtpVerification> createState() => _OtpVerificationState();

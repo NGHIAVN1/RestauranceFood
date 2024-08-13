@@ -1,4 +1,5 @@
 class FoodRestaurant {
- late String numberPhone;
- 
+  String? restauranceId;
+  String? nameRestaurance;
+  
 }
