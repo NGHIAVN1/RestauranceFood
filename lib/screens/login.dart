@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -9,6 +10,7 @@ import 'package:main/blocs/login_bloc.dart';
 import 'package:main/components/country_picker.dart';
 import 'package:main/screens/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:main/screens/signup.dart';
 import 'package:main/services/auth-service.dart';
 import 'package:main/firebase_options.dart';
 
@@ -197,9 +199,22 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ]),
           Center(
-            child: Text(
-              'You are not account! Sign in',
-              selectionColor: Colors.blue,
+            child: Text.rich(
+              TextSpan(
+                text: 'Don\'t have an account? ',
+                style: TextStyle(color: Colors.black),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Sign up',
+                    style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.bold),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.pushNamed(context, ('/signup'));
+                      },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -209,27 +224,25 @@ class _LoginPageState extends State<LoginPage> {
 
   StreamBuilder<String> _builtFormPhoneNumber() {
     return StreamBuilder(
-                    initialData: '',
-                    stream: _loginBloc.phoneNumber,
-                    builder: (BuildContext context, AsyncSnapshot snapshot) =>
-                        Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.amber),
-                      child: IconButton(
-                          onPressed: () async {
-                            try {
-                              await _loginBloc.logIn('+84 946 776 036');
-                              Navigator.pushNamed(context, '/verify_otp');
-                            } on FirebaseException catch (e) {
-                              print('Exception: ${e.toString()}');
-                            }
-                          },
-                          icon: Icon(Icons.east)),
-                    ),
-                  );
+      initialData: '',
+      stream: _loginBloc.phoneNumber,
+      builder: (BuildContext context, AsyncSnapshot snapshot) => Container(
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5.0), color: Colors.amber),
+        child: IconButton(
+            onPressed: () async {
+              try {
+                await _loginBloc.logIn('+84 946 776 036');
+                Navigator.pushNamed(context, '/verify_otp');
+              } on FirebaseException catch (e) {
+                print('Exception: ${e.toString()}');
+              }
+            },
+            icon: Icon(Icons.east)),
+      ),
+    );
   }
 
   void PhoneNumberOptions({required BuildContext context}) {
