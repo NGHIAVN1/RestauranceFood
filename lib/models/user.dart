@@ -18,8 +18,7 @@ class User {
       this.password,
       this.date,
       this.email,
-       this.photoUrl 
-      
+      this.photoUrl 
       });
   factory User.fromDoc(dynamic doc) =>
       User(documentId: doc.documentId, date: doc["date"]);

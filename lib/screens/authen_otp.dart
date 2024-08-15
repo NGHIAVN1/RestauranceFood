@@ -13,8 +13,8 @@ import 'package:main/services/auth-service.dart';
 import 'package:main/firebase_options.dart';
 
 class OtpVerification extends StatefulWidget {
-  const OtpVerification({super.key, required String verificationId});
-
+  final String verificationId;
+  const OtpVerification({super.key, required this.verificationId});
   @override
   State<OtpVerification> createState() => _OtpVerificationState();
 }
@@ -97,8 +97,12 @@ class _OtpVerificationState extends State<OtpVerification> {
                         child: IconButton(
                             onPressed: () async {
                               try {
+                                print(widget.verificationId);
                                 print(snapshot.data);
-                                await _loginBloc.verifyOtp(snapshot.data);
+                                await _loginBloc.verifyOtp(snapshot.data,
+                                widget.verificationId);
+                                await Navigator.push(context, (MaterialPageRoute(builder: (context) => HomePage())));
+
                               } on FirebaseException catch (e) {
                                 print('Exception: ${e.toString()}');
                               }

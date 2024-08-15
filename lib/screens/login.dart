@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -8,6 +9,7 @@ import 'package:main/blocs/authentication_bloc.dart';
 import 'package:main/blocs/login_bloc.dart';
 import 'package:main/blocs/login_bloc.dart';
 import 'package:main/components/country_picker.dart';
+import 'package:main/screens/authen_otp.dart';
 import 'package:main/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:main/screens/signup.dart';
@@ -22,6 +24,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String myState ="";
+  String codeSent(String s) {
+    var a = s;
+    return a;
+  }
+
   late LoginBloc _loginBloc;
   @override
   void initState() {
@@ -234,8 +242,17 @@ class _LoginPageState extends State<LoginPage> {
         child: IconButton(
             onPressed: () async {
               try {
-                await _loginBloc.logIn('+84 946 776 036');
-                Navigator.pushNamed(context, '/verify_otp');
+                await _loginBloc.logIn('+84 946 776 036', (String uid) {
+                  setState(() {
+                    myState = uid;
+                  });
+                });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+              
+                            OtpVerification(verificationId: myState)));
               } on FirebaseException catch (e) {
                 print('Exception: ${e.toString()}');
               }

@@ -32,10 +32,20 @@ class LoginBloc with Validators {
     });
   }
 
-  Future<void> logIn(String phone) async {
-    await _authentication.signInWithPhoneNumber(phone);
+  Future<void> logIn(String phone, Function(String) uidCallBack) async {
+    await _authentication.signInWithPhoneNumber(phone, uidCallBack );
   }
-  Future<void> verifyOtp(String smsCode) async {
-    await _authentication.verifyOTP( verificationId: "" ,smsCode: smsCode);
+  Future<void> verifyOtp(String smsCode, String _verificationId) async {
+    await _authentication.verifyOTP(smsCode: smsCode, token: _verificationId);
+  }
+  Future<String> currentUser() async {
+    return await _authentication.currentUser();
+  }
+  Future<void> signOut() async {
+    await _authentication.signout();
+  }
+  void dispose() {
+    _phoneNumberController.close();
+    _otpCodeController.close();
   }
 }
