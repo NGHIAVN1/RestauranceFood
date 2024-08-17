@@ -8,20 +8,19 @@ class LoginBloc with Validators {
   final Authentication _authentication;
   late String _phoneNumber;
   late bool _validatePhoneNumber;
-  final StreamController<String> _phoneNumberController =
-      StreamController<String>.broadcast();
 
-  LoginBloc(this._authentication) {
+    LoginBloc(this._authentication) {
     _startListenerPhoneNumberValid();
   }
-  Sink<String> get phoneNumberChange => _phoneNumberController.sink;
-  Stream<String> get phoneNumber =>
-      _phoneNumberController.stream.transform(validators);
 
-  final StreamController<String> _otpCodeController =
-      StreamController.broadcast();
+  final StreamController<String> _phoneNumberController = StreamController<String>.broadcast();
+  Sink<String> get phoneNumberChange => _phoneNumberController.sink;
+  Stream<String> get phoneNumber =>_phoneNumberController.stream.transform(validators);
+
+  final StreamController<String> _otpCodeController =StreamController.broadcast();
   Sink<String> get changeOtpCode => _otpCodeController.sink;
   Stream<String> get OtpCode => _otpCodeController.stream;
+  
   void _startListenerPhoneNumberValid() {
     phoneNumber.listen((phoneNumber) {
       _phoneNumber = phoneNumber;
@@ -35,15 +34,19 @@ class LoginBloc with Validators {
   Future<void> logIn(String phone, Function(String) uidCallBack) async {
     await _authentication.signInWithPhoneNumber(phone, uidCallBack );
   }
+
   Future<void> verifyOtp(String smsCode, String _verificationId) async {
     await _authentication.verifyOTP(smsCode: smsCode, token: _verificationId);
   }
+
   Future<String> currentUser() async {
     return await _authentication.currentUser();
   }
+
   Future<void> signOut() async {
     await _authentication.signout();
   }
+  
   void dispose() {
     _phoneNumberController.close();
     _otpCodeController.close();

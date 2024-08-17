@@ -15,13 +15,13 @@ class SignUpBloc  {
    final StreamController<String> _phoneController = StreamController<String>.broadcast();
    final StreamController<String> _addressController = StreamController<String>.broadcast();
  
-  Stream get emailStream => _emailController.stream;
-  Stream get passwordStream => _passwordController.stream;
-  Stream get nameStream => _nameController.stream;
-  Stream get phoneStream => _phoneController.stream;
-  Stream get addressStream => _addressController.stream;
+  Stream<String> get emailStream => _emailController.stream;
+  Stream<String> get passwordStream => _passwordController.stream;
+  Stream<String> get nameStream => _nameController.stream;
+  Stream<String> get phoneStream => _phoneController.stream;
+  Stream<String> get addressStream => _addressController.stream;
 
-  Sink <String> get changeEmail => _emailController.sink;
+  Sink<String> get changeEmail => _emailController.sink;
   Sink<String> get changePassword => _passwordController.sink;
   Sink<String> get changeName => _nameController.sink;
   Sink<String> get changePhone => _phoneController.sink;

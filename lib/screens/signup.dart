@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:main/blocs/signup_bloc.dart';
+import 'package:main/models/user.dart';
 import 'package:main/services/firestore_db.dart';
 
 class SignUp extends StatefulWidget {
@@ -12,21 +13,21 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  @override
-  Widget build(BuildContext context) {
-   // ignore: no_leading_underscores_for_local_identifiers
-   late SignUpBloc _signUpBloc;
+  late SignUpBloc signUpBloc;
     
     @override
-    initState() {
+   void initState() {
       super.initState();
-      _signUpBloc = SignUpBloc(DbstroreService());
+      signUpBloc = SignUpBloc(DbstroreService());
     }
 
     @override
     void dispose() {
       super.initState();
     }
+  @override
+  Widget build(BuildContext context) {
+   
     return  Scaffold(
       backgroundColor: Colors.white,
         appBar: AppBar(
@@ -48,6 +49,7 @@ class _SignUpState extends State<SignUp> {
                     child: Text('Sign Up')),
                  ),
                 StreamBuilder<String>(
+                  initialData: '',
                   stream: null,
                   builder: (context, snapshot) {
                     return Padding(
@@ -55,7 +57,7 @@ class _SignUpState extends State<SignUp> {
                       child: Container(
                         width: 400,
                         child: TextField(
-                          onChanged: (value) => _signUpBloc.changeEmail.add(value),
+                          onChanged: (value) => signUpBloc.changeEmail.add(value),
                           decoration: InputDecoration(
                             
                             hintText: 'Email',
@@ -66,6 +68,7 @@ class _SignUpState extends State<SignUp> {
                   }
                 ),
                 StreamBuilder<String>(
+                  initialData: '',
                   stream: null,
                   builder: (context, snapshot) {
                     return Padding(
@@ -73,7 +76,7 @@ class _SignUpState extends State<SignUp> {
                       child:  Container(
                             width: 400,
                         child: TextField(
-                          onChanged: (value) => _signUpBloc.changeName.add(value),
+                          onChanged: (value) => signUpBloc.changeName.add(value),
                           decoration: InputDecoration(
                             hintText: 'Full Name',
                           ),
@@ -83,6 +86,7 @@ class _SignUpState extends State<SignUp> {
                   }
                 ),
                 StreamBuilder<String>(
+                  initialData: '',
                   stream: null,
                   builder: (context, snapshot) {
                     return Padding(
@@ -90,7 +94,7 @@ class _SignUpState extends State<SignUp> {
                       child:  Container(
                         width: 400,
                         child: TextField(
-                          onChanged: (value) => _signUpBloc.changePhone.add(value),
+                          onChanged: (value) => signUpBloc.changePhone.add(value),
                           decoration: InputDecoration(
                             hintText: 'Phone Number',
                           ),
@@ -100,6 +104,7 @@ class _SignUpState extends State<SignUp> {
                   }
                 ),
                 StreamBuilder<String>(
+                  initialData: '',
                   stream: null,
                   builder: (context, snapshot) {
 
@@ -108,7 +113,7 @@ class _SignUpState extends State<SignUp> {
                       child:  Container(
                         width: 400,
                         child: TextField(
-                          onChanged: (value) => _signUpBloc.changeAddress.add(value),
+                          onChanged: (value) => signUpBloc.changeAddress.add(value),
                           decoration: InputDecoration(
                             hintText: 'Address',
                           ),
@@ -118,6 +123,7 @@ class _SignUpState extends State<SignUp> {
                   }
                 ),
                 StreamBuilder<String>(
+                  initialData: '',
                   stream: null,
                   builder: (context, snapshot) {
                     return Padding(
@@ -126,7 +132,7 @@ class _SignUpState extends State<SignUp> {
                       child:  Container(
                         width: 400,
                         child: TextField(
-                          onChanged: (value) => _signUpBloc.changePassword.add(value),
+                          onChanged: (value) => signUpBloc.changePassword.add(value),
                           decoration: InputDecoration(
                             hintText: 'Password',
                           ),
@@ -137,6 +143,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 
                  StreamBuilder<String>(
+                  initialData: '',
                    stream: null,
                    builder: (context, snapshot) {
                      return Padding(
@@ -144,7 +151,7 @@ class _SignUpState extends State<SignUp> {
                       child: Container(
                         width: 400,
                         child: TextField(
-                          onChanged: (value) => _signUpBloc.changePassword.add(value),
+                          onChanged: (value) => signUpBloc.changePassword.add(value),
                           decoration: const InputDecoration(
                             hintText: 'Repeat Password',
                           ),
@@ -160,14 +167,25 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: StreamBuilder<Object>(
+                      initialData: '',
                       stream: null,
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
 
                         return ElevatedButton(
                           onPressed: () async{
-                            await  _signUpBloc.onSubmits(snapshot.data);
-                            print(snapshot.data);
-                            print('Sign Up Successful');
+                            try {
+                             await signUpBloc.onSubmits(User(
+                                email: 'dnghia1632001@gmail.com ',
+                                fullName: 'Nghia Doan',
+                                phoneNumber: '',
+                                address: '',
+                                password: '',
+                                
+                              ));
+                              print('Sign Up');
+                            } catch (e) {
+                              print('Exception: ${e.toString()}');
+                            }
                           }, 
                           child: Text('Sign Up'),
                           style: ButtonStyle(
